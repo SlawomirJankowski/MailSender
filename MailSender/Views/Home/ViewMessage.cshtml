@@ -1,0 +1,38 @@
+﻿@model  MailSender.Models.ViewModels.EmailMessageViewModel
+
+@{
+    ViewBag.Title = "Message details";
+}
+
+
+<div class="btn-toolbar justify-content-between">
+    <div class="input-group">
+        <h1 class="">@ViewBag.Title</h1>
+
+    </div>
+
+    <div class="input-group">
+        <button class="btn btn-info btn-lg"
+                onclick='window.location.href=""'>
+            <i class="fa-solid fa-print me-2"></i>
+            Print
+        </button>
+    </div>
+</div>
+
+<hr />
+
+@Html.Partial("_MessageContent")
+
+
+<div class="text-center">
+    <button class="btn btn-lg btn-info mt-5 "
+            onclick='window.location.href="@Url.Action("Index", "Home")"'>
+        <i class="fa-solid fa-arrow-rotate-left me-2"></i>
+        Back to Messages
+    </button>
+    <button class="btn btn-lg btn-danger mt-5 " onclick="">
+        <i class="fa-solid fa-trash-can me-2"></i>
+        Delete
+    </button>
+</div>

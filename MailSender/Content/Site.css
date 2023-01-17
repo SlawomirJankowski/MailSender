@@ -1,0 +1,89 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+
+textbox {
+    box-shadow: 2px 2px 2px rgba(0,0,0,.1);
+}
+
+.navbar-inverse .navbar-toggle:hover,
+.navbar-inverse .navbar-toggle:focus {
+    background-color: #777;
+    border-color: #fff
+}
+
+#accountSelector {
+    width: 550px;
+    font-weight: bold;
+}
+
+.list-components {
+    font-size: 14px;
+}
+
+.list-components-item {
+    margin-top: 8px;
+}
+
+#editor {
+    background: var(--ck-sample-color-white);
+    box-shadow: 2px 2px 2px rgba(0,0,0,.1);
+    border: 1px solid #DFE4E6;
+    border-bottom-color: #cdd0d2;
+    border-right-color: #cdd0d2;
+}
+
+.ck.ck-editor {
+    box-shadow: 2px 2px 2px rgba(0,0,0,.1);
+}
+
+.ck-focused {
+    border-color: #eb6864 !important;
+}
+
+.ck.ck-content {
+    font-size: 1.3em;
+    line-height: 1.2em;
+    margin-bottom: 0.8em;
+    min-height: 300px;
+    max-height: 300px;
+    padding: 1.5em 2em;
+}
+
+
+input[type=file]::file-selector-button {
+    border: 2px solid #6c5ce7;
+    padding: .2em .4em;
+    border-radius: .2em;
+    background-color: #a29bfe;
+    transition: 1s;
+}
+
+input[type=file]::file-selector-button:hover {
+    background-color: #81ecec;
+    border: 2px solid #00cec9;
+}
+
+#message-frame {
+    box-shadow: 2px 2px 2px rgba(0,0,0,.1);
+    border: 1px solid #DFE4E6;
+    border-bottom-color: #cdd0d2;
+    border-right-color: #cdd0d2;
+}
+
