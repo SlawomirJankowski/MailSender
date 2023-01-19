@@ -76,7 +76,7 @@ namespace MailSender.Controllers
             emailMessage.UserId = userId;
             emailMessage.SentDate = DateTime.Now;
 
-            //to prevent XXS attacks
+            //to prevent XSS attacks
             emailMessage.Body = WebUtility.HtmlDecode(emailMessage.Body);
             emailMessage.Body = HtmlSanitizer(emailMessage.Body);
 
