@@ -12,7 +12,7 @@
 
 <div class="row">
 
-    @using (Html.BeginForm("NewMessage", "Home"))
+    @using (Html.BeginForm("NewEmail", "Home"))
     {
 
         @Html.HiddenFor(x => x.EmailMessage.Id)
@@ -68,9 +68,9 @@
 
             <div class="form-group mb-2 mt-4 ">
                 @Html.LabelFor(x => x.EmailMessage.Body, new { @class = "control-label col-form-label-lg" })
-                <div id="editor" class="">
+                <div class="">
                     @Html.TextAreaFor(x => x.EmailMessage.Body,
-                   new { @class = "form-control" })
+                   new { @class = "form-control", id = "editor" })
                 </div>
             </div>
 
@@ -89,6 +89,9 @@
 
         ClassicEditor
             .create(document.querySelector('#editor'))
+            .then(editor => {
+                editor.getData();
+            })
             .catch(error => {
                 console.error(error);
             });

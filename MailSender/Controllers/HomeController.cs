@@ -6,8 +6,12 @@ using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Ganss.Xss;
+using System.Web.Services.Description;
+
 
 namespace MailSender.Controllers
 {
@@ -21,7 +25,6 @@ namespace MailSender.Controllers
         public ActionResult Index()
         {
             var userId = User.Identity.GetUserId();
-
             var sentMessages = _sentMessagesRepository.GetSentMessages(userId);
 
             return View(sentMessages);
@@ -30,53 +33,66 @@ namespace MailSender.Controllers
         public ActionResult ViewMessage(int id)
         {
             var userId = User.Identity.GetUserId();
-            var message = _sentMessagesRepository.GetSentMessage(id, userId);
+            var emailMessage = _sentMessagesRepository.GetSentMessage(id, userId);
 
-            var vm = PrepareEmailMessageVM(message, userId);
+
+            var vm = PrepareEmailMessageVM(emailMessage, userId);
 
             return View(vm);
         }
+
+        private string HtmlSanitizer(string dirtyHtml)
+        {
+            var sanitizer = new HtmlSanitizer();
+            var cleanHtml = sanitizer.Sanitize(dirtyHtml);
+            return cleanHtml;
+        }
+
 
         public ActionResult NewEmail()
         {
             var userId = User.Identity.GetUserId();
-            var message = new EmailMessage { UserId = userId };
-            
-            var vm = PrepareEmailMessageVM(message, userId);
+            var emailMessage = new EmailMessage { UserId = userId };
+
+            var vm = PrepareEmailMessageVM(emailMessage, userId);
 
             return View(vm);
         }
 
-        private EmailMessageViewModel PrepareEmailMessageVM(EmailMessage message, string userId)
+        private EmailMessageViewModel PrepareEmailMessageVM(EmailMessage emailMessage, string userId)
         {
             return new EmailMessageViewModel
             {
-                EmailMessage = message,
+                EmailMessage = emailMessage,
                 UserEmailAccountsParams = _userEmailAccountsParamsRepository.GetEmailAccounts(userId)
             };
         }
 
 
         [HttpPost]
-        public ActionResult NewEmail(EmailMessage message)
+        public ActionResult NewEmail(EmailMessage emailMessage)
         {
             var userId = User.Identity.GetUserId();
-            message.UserId = userId; 
-            message.SentDate = DateTime.Now;
-            //message.ToEmail = "xyz@com.com";
-            // message.Subject = "Subject_xyz";
-            //message.Body = "Email content";
-            //message.UserEmailAccountId = 1;
+            emailMessage.UserId = userId;
+            emailMessage.SentDate = DateTime.Now;
+
+            //to prevent XXS attacks
+            emailMessage.Body = WebUtility.HtmlDecode(emailMessage.Body);
+            emailMessage.Body = HtmlSanitizer(emailMessage.Body);
 
             if (!ModelState.IsValid)
             {
-                var vm = PrepareEmailMessageVM(message, userId);
+                var vm = PrepareEmailMessageVM(emailMessage, userId);
                 return View("NewEmail", vm);
             }
 
-            _sentMessagesRepository.Add(message); 
+
 
             //send e-mail 
+
+
+
+            _sentMessagesRepository.Add(emailMessage);
 
             return RedirectToAction("Index");
         }
@@ -93,7 +109,7 @@ namespace MailSender.Controllers
             catch (Exception exc)
             {
                 //logowanie do pliku
-                return Json(new {Success = false, Message= exc.Message});
+                return Json(new { Success = false, Message = exc.Message });
             }
             return Json(new { Success = true });
         }

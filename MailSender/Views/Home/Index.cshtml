@@ -49,16 +49,15 @@
                             @message.Subject
                         </a>
                     </td>
-                    @if (message.Body.Length < 300)
+                    @if (string.IsNullOrEmpty(message.Body) ||
+                            WebUtility.HtmlDecode(message.Body).Length < 300)
                     {
-                        <td class="text-start">@message.Body</td>
+                        <td class="text-start">@Html.Raw(WebUtility.HtmlDecode(message.Body))</td>
                     }
                     else
                     {
-                        <td class="text-start">@message.Body.Substring(0, 300)<span>(...)</span></td>
+                        <td class="text-start">@Html.Raw(WebUtility.HtmlDecode(message.Body).Substring(0, 300))<span>(...)</span></td>
                     }
-
-                    @*<td class="text-start">@message.Body</td>*@
 
                     <td>
                         <button class="btn btn-sm btn-danger" onclick="">

@@ -15,7 +15,7 @@
             <hr class="my-4" />
 
             <div>
-                @Model.EmailMessage.Body
+                @Html.Raw(WebUtility.HtmlDecode(Model.EmailMessage.Body))
             </div>
         </div>
     </div>
