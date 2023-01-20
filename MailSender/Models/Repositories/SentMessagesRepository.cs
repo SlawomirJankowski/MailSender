@@ -5,6 +5,7 @@ using System.Linq;
 using System.Data.Entity;
 using System.Web;
 using System.Data.Entity.Validation;
+using System.Web.Services.Description;
 
 namespace MailSender.Models.Repositories
 {
@@ -50,7 +51,22 @@ namespace MailSender.Models.Repositories
 
         public void Delete(int id, string userId)
         {
-            throw new NotImplementedException();
+            using (var context = new ApplicationDbContext())
+            {
+                try
+                {
+                    var messageToDelete = context.SentMessages
+                        .Single(x => x.Id == id && x.UserId == userId);
+                    context.SentMessages.Remove(messageToDelete);
+                    context.SaveChanges();
+                }
+                catch (Exception e)
+                {
+
+                    throw e;
+                }
+
+            }
         }
     }
 }

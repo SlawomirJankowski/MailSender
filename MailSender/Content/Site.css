@@ -87,3 +87,7 @@ input[type=file]::file-selector-button:hover {
     border-right-color: #cdd0d2;
 }
 
+.msg-view-header {
+    color: #172f8b;
+}
+

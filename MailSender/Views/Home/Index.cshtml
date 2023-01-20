@@ -35,6 +35,7 @@
                 <th scope="col" style="width:10%">RECEIVER</th>
                 <th scope="col" style="width:20%">SUBJECT</th>
                 <th scope="col" style="width:auto">MESSAGE</th>
+                <th scope="col" style="width:5%"><i class="fa-solid fa-magnifying-glass"></i></th>
                 <th scope="col" style="width:5%"><i class="fa-solid fa-trash-can"></i></th>
             </tr>
         </thead>
@@ -44,11 +45,8 @@
                 <tr>
                     <td>@message.SentDate.ToString()</td>
                     <td>@message.ToEmail</td>
-                    <td>
-                        <a href="@Url.Action("ViewMessage", "Home", new { id = message.Id })">
-                            @message.Subject
-                        </a>
-                    </td>
+                    <td>@message.Subject</td>
+
                     @if (string.IsNullOrEmpty(message.Body) ||
                             WebUtility.HtmlDecode(message.Body).Length < 300)
                     {
@@ -60,7 +58,14 @@
                     }
 
                     <td>
-                        <button class="btn btn-sm btn-danger" onclick="">
+                        <button class="btn btn-sm btn-success"
+                                onclick='window.location.href="@Url.Action("ViewMessage", "Home", new { id = message.Id })"'>
+                            View
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn btn-sm btn-danger"
+                                onclick="deleteMessage('@message.Id', this)">
                             Delete
                         </button>
                     </td>
@@ -76,20 +81,53 @@ else
     </div>
 }
 
-<script>
-    $(document).ready(function () {
-        $('.messagesTable').DataTable({
-            columnDefs: [
-                {
-                    targets: [0, 1, 2, 3, 4],
-                    className: 'dt-head-center'
+@section Scripts
+{
+    <script type="text/javascript">
+
+        function deleteMessage(id, btn) {
+
+            if (!confirm("Confirm to remove this e-mail?"))
+                return;
+
+            $.ajax({
+                type: 'POST',
+                url: "@Url.Action("Delete", "Home")",
+                data: {
+                    id: id
                 },
-                {
-                    targets: [3, 4],
-                    orderable: false
-                }
-            ]
+                success: function (data) {
+                    if (data.Success) {
+                        var row = btn.parentNode.parentNode;
+                        row.parentNode.removeChild(row);
+                    } else {
+                        alert(data.Message);
+                    }
+                },
+                error: function (data) {
+                    alert(data.Message);
+                },
+                dataType: 'json'
+            });
+
         }
-        );
-    });
-</script>
+
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('.messagesTable').DataTable({
+                columnDefs: [
+                    {
+                        targets: [0, 1, 2, 3, 4],
+                        className: 'dt-head-center'
+                    },
+                    {
+                        targets: [3, 4],
+                        orderable: false
+                    }
+                ]
+            }
+            );
+        });
+    </script>
+}

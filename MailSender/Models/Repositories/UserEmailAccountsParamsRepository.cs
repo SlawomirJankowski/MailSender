@@ -17,5 +17,14 @@ namespace MailSender.Models.Repositories
                     .ToList();
             }
         }
+
+        internal UserEmailAccountParams GetAccountParams(int userEmailAccountParamsId, string userId)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                return context.UserEmailAccounts
+                    .Single(x => x.Id == userEmailAccountParamsId && x.UserId == userId);
+            }
+        }
     }
 }

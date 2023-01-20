@@ -35,19 +35,10 @@ namespace MailSender.Controllers
             var userId = User.Identity.GetUserId();
             var emailMessage = _sentMessagesRepository.GetSentMessage(id, userId);
 
-
             var vm = PrepareEmailMessageVM(emailMessage, userId);
 
             return View(vm);
         }
-
-        private string HtmlSanitizer(string dirtyHtml)
-        {
-            var sanitizer = new HtmlSanitizer();
-            var cleanHtml = sanitizer.Sanitize(dirtyHtml);
-            return cleanHtml;
-        }
-
 
         public ActionResult NewEmail()
         {
@@ -86,25 +77,43 @@ namespace MailSender.Controllers
                 return View("NewEmail", vm);
             }
 
+            var userEmailAccountParams = _userEmailAccountsParamsRepository.GetAccountParams(emailMessage.UserEmailAccountParamsId, userId);
 
-
-            //send e-mail 
-
-
+            try
+            {
+                var emailSender = new EmailSender(userEmailAccountParams);
+                emailSender.Send(emailMessage);
+                ViewBag.Result = "E-mail succesfully sent !";
+            }
+            catch (Exception ex)
+            {
+                //logowanie
+                ViewBag.Result = ex.Message;
+            }
+                             
 
             _sentMessagesRepository.Add(emailMessage);
 
             return RedirectToAction("Index");
         }
 
-        [HttpPost]
-        public ActionResult DeleteMessage(int id)
+
+
+        private string HtmlSanitizer(string dirtyHtml)
+        {
+            var sanitizer = new HtmlSanitizer();
+            var cleanHtml = sanitizer.Sanitize(dirtyHtml);
+            return cleanHtml;
+        }
+
+
+        [HttpPost] //from main window
+        public ActionResult Delete(int id)
         {
             try
             {
                 var userId = User.Identity.GetUserId();
                 _sentMessagesRepository.Delete(id, userId);
-
             }
             catch (Exception exc)
             {
@@ -113,8 +122,6 @@ namespace MailSender.Controllers
             }
             return Json(new { Success = true });
         }
-
-
 
         [AllowAnonymous]
         public ActionResult About()

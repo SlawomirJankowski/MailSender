@@ -1,21 +1,24 @@
 ﻿@model  MailSender.Models.ViewModels.EmailMessageViewModel
 
 
-    <div id="message-frame" class="mt-5">
-        <div class="mx-5 my-5">
-            <h2>Message to:&nbsp; @Model.EmailMessage.ToEmail</h2>
-            <h4>Sent:&nbsp; @Model.EmailMessage.SentDate.ToString()</h4>
-            @*<h4>From:&nbsp; @Model.EmailMessage.UserEmailAccountParams.SenderName
+<div id="message-frame" class="mt-5">
+    <div class="mx-5 my-5">
+        <h2>Message to:&nbsp; <span class="msg-view-header">@Model.EmailMessage.ToEmail</span></h2>
+        <h4>Sent:&nbsp; <span class="msg-view-header">@Model.EmailMessage.SentDate.ToString()</span></h4>
+        <h4>
+            From:&nbsp;<span class="msg-view-header">
+                @Model.EmailMessage.UserEmailAccountParams.SenderName
                 <span> &nbsp;&nbsp; [</span>
                 @Model.EmailMessage.UserEmailAccountParams.SenderEmail
                 <span>]</span>
-            </h4>*@
-            <br />
-            <h3>Subject:&nbsp; @Model.EmailMessage.Subject</h3>
-            <hr class="my-4" />
+            </span>
+        </h4>
+        <br />
+        <h3>Subject:&nbsp; <span class="msg-view-header">@Model.EmailMessage.Subject</span></h3>
+        <hr class="my-4" />
 
-            <div>
-                @Html.Raw(WebUtility.HtmlDecode(Model.EmailMessage.Body))
-            </div>
+        <div>
+            @Html.Raw(WebUtility.HtmlDecode(Model.EmailMessage.Body))
         </div>
     </div>
+</div>

@@ -12,8 +12,8 @@
     </div>
 
     <div class="input-group">
-        <button class="btn btn-info btn-lg"
-                onclick='window.location.href=""'>
+        <button class="btn btn-info btn-lg" 
+                onclick="printMessage()">
             <i class="fa-solid fa-print me-2"></i>
             Print
         </button>
@@ -31,8 +31,52 @@
         <i class="fa-solid fa-arrow-rotate-left me-2"></i>
         Back to Messages
     </button>
-    <button class="btn btn-lg btn-danger mt-5 " onclick="">
+    <button class="btn btn-lg btn-danger mt-5 " onclick="deleteMessage(@Model.EmailMessage.Id)">
         <i class="fa-solid fa-trash-can me-2"></i>
         Delete
     </button>
 </div>
+
+
+@section Scripts
+{
+
+    <script type="text/javascript">
+        //printing part of the page
+        function printMessage() {
+
+            var HTML = $('html');
+            var elementToPrint = document.documentElement.innerHTML;
+            HTML.html($('#message-frame'));
+            window.print();
+            document.documentElement.innerHTML = elementToPrint;
+            return false;
+        }
+
+
+        function deleteMessage(id) {
+
+            if (!confirm("Confirm to remove this e-mail?"))
+                return;
+
+            $.ajax({
+                type: 'POST',
+                url: "@Url.Action("Delete", "Home")",
+                data: {
+                    id: id
+                },
+                success: function (data) {
+                    if (data.Success) {
+                        window.location.href = "@Url.Action("Index", "Home")";
+                    } else {
+                        alert(data.Message);
+                    }
+                },
+                error: function (data) {
+                    alert(data.Message);
+                },
+                dataType: 'json'
+            });
+        }
+    </script>
+}

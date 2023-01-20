@@ -1,2 +1,0 @@
-﻿1. Bootstrap Theme - JOURNAL - https://bootswatch.com/journal/
-2. Font Awesome - NuGet -> FontAwesome.MVC
