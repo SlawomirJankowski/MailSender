@@ -36,7 +36,7 @@ namespace MailSender
             _senderName = userEmailAccountParams.SenderName;
         }
 
-        public void Send(EmailMessage emailMessage)
+        public async Task Send(EmailMessage emailMessage)
         {
             _mail = new MailMessage();
             _mail.From = new MailAddress(_senderEmail, _senderName);
@@ -66,7 +66,7 @@ namespace MailSender
 
             _smtp.SendCompleted += OnSendCompleted;
 
-            _smtp.Send(_mail);
+            await _smtp.SendMailAsync(_mail);
         }
 
         private void OnSendCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)

@@ -11,7 +11,7 @@ using System.Web;
 using System.Web.Mvc;
 using Ganss.Xss;
 using System.Web.Services.Description;
-
+using System.Threading.Tasks;
 
 namespace MailSender.Controllers
 {
@@ -61,7 +61,7 @@ namespace MailSender.Controllers
 
 
         [HttpPost]
-        public ActionResult NewEmail(EmailMessage emailMessage)
+        public async Task<ActionResult> NewEmail(EmailMessage emailMessage)
         {
             var userId = User.Identity.GetUserId();
             emailMessage.UserId = userId;
@@ -82,7 +82,7 @@ namespace MailSender.Controllers
             try
             {
                 var emailSender = new EmailSender(userEmailAccountParams);
-                emailSender.Send(emailMessage);
+                await emailSender.Send(emailMessage);
                 ViewBag.Result = "E-mail succesfully sent !";
             }
             catch (Exception ex)
