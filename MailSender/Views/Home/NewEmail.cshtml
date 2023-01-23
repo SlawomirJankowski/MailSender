@@ -12,19 +12,16 @@
 
 <div class="row">
 
-    @using (Html.BeginForm("NewEmail", "Home"))
+    @using (Html.BeginForm("NewEmail", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
-
         @Html.HiddenFor(x => x.EmailMessage.Id)
         @Html.HiddenFor(x => x.EmailMessage.UserId)
         @Html.HiddenFor(x => x.EmailMessage.SentDate)
 
-
         <div class="row">
+            <p class="alert alert-success">Fields: SENDER E-MAIL, TO, SUBJECT are <strong>required !</strong></p>
+
             <div class="col col-5">
-
-                <p class="alert alert-success">Fields: SENDER E-MAIL, TO, SUBJECT are <strong>required !</strong></p>
-
                 <div class="form-group mt-2">
                     @Html.LabelFor(x => x.EmailMessage.UserEmailAccountParamsId, new { @class = "control-label col-form-label-lg" })
                     @Html.DropDownListFor(x => x.EmailMessage.UserEmailAccountParamsId,
@@ -38,7 +35,7 @@
                     @Html.LabelFor(x => x.EmailMessage.ToEmail, new { @class = "control-label col-form-label-lg" })
 
                     @Html.TextBoxFor(x => x.EmailMessage.ToEmail,
-                   new { @class = "form-control", autocomplete = "off", type = "" })
+                   new { @class = "form-control", autocomplete = "off", type = "email" })
                     @Html.ValidationMessageFor(x => x.EmailMessage.ToEmail)
                 </div>
 
@@ -46,15 +43,23 @@
                     @Html.LabelFor(x => x.EmailMessage.CCEmail, new { @class = "control-label col-form-label-lg" })
 
                     @Html.TextBoxFor(x => x.EmailMessage.CCEmail,
-                   new { @class = "form-control", autocomplete = "off", type = "" })
+                   new { @class = "form-control", autocomplete = "off", type = "email" })
                     @Html.ValidationMessageFor(x => x.EmailMessage.CCEmail)
                 </div>
 
             </div>
 
             <div class="col col-5 offset-2">
+                @*<div class="mt-2 form-group">
+                    <label class="control-label col-form-label-lg">Attachments:</label>
+                    <div>
+                        <input type="file" multiple="multiple" name="postedFiles" />
+                    </div>
+                </div>*@
+                @Html.LabelFor(x => x.FileUploader.PostedFiles, new { @class = "control-label col-form-label-lg" })
+                @Html.TextBoxFor(x => x.FileUploader.PostedFiles,
+                new { @class = "form-control btn-info", type = "file", multiple = "multiple", name="postedFiles" })
 
-                <label class="control-label col-form-label-lg">Attachments:</label>
             </div>
 
         </div>
@@ -62,7 +67,7 @@
             <div class="form-group mb-2 mt-4">
                 @Html.LabelFor(x => x.EmailMessage.Subject, new { @class = "control-label col-form-label-lg" })
                 @Html.TextBoxFor(x => x.EmailMessage.Subject,
-               new { @class = "form-control form-control-lg col-12 subject-textbox", autocomplete = "off" })
+               new { @class = "form-control form-control-lg col-12 subject-textbox", autocomplete = "off", type = "text" })
                 @Html.ValidationMessageFor(x => x.EmailMessage.Subject)
             </div>
 

@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.IO;
 using System.Linq;
 using System.Web;
+using System.Web.Hosting;
 using System.Web.Mvc;
 
 namespace MailSender.Models.Domains
@@ -34,17 +36,34 @@ namespace MailSender.Models.Domains
         [AllowHtml]
         public string Body { get; set; }
 
-        // add attachment 
+        public string AttachmentsDirectoryPath { get; set; }
+
+        public string AttachmentsFileNames { get; set; }
 
 
         [Required]
         [ForeignKey("User")]
         public string UserId { get; set; }
 
+
         public ApplicationUser User { get; set; }
         public UserEmailAccountParams UserEmailAccountParams { get; set; }
 
 
+        public string GetAttachmentsDirectoryPath()
+        {
+            return HostingEnvironment.MapPath(AttachmentsDirectoryPath);
+        }
+
+        public string[] GetAttachmentFilesList()
+        {
+            return AttachmentsFileNames.Split(new string[] { "|||" }, StringSplitOptions.None);
+        }
+
+        public string ConvertListOfAttachedFilesTostring(List<string> uploadedFilesList)
+        {
+            return string.Join("|||", uploadedFilesList);
+        }
 
     }
 }

@@ -1,4 +1,5 @@
-﻿using MailSender.Models.Domains;
+﻿using MailSender.Extensions;
+using MailSender.Models.Domains;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,5 +11,7 @@ namespace MailSender.Models.ViewModels
     {
         public EmailMessage EmailMessage { get; set; }
         public List<UserEmailAccountParams> UserEmailAccountsParams { get; set; }
+
+        public FileUploader FileUploader { get; set; }
     }
 }

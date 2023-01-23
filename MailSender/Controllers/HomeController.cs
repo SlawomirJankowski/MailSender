@@ -1,17 +1,16 @@
-﻿using MailSender.Models;
+﻿using Ganss.Xss;
+using MailSender.Extensions;
 using MailSender.Models.Domains;
 using MailSender.Models.Repositories;
 using MailSender.Models.ViewModels;
 using Microsoft.AspNet.Identity;
 using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using Ganss.Xss;
-using System.Web.Services.Description;
-using System.Threading.Tasks;
 
 namespace MailSender.Controllers
 {
@@ -61,11 +60,19 @@ namespace MailSender.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult> NewEmail(EmailMessage emailMessage)
+        public async Task<ActionResult> NewEmail(EmailMessage emailMessage, FileUploader fileUploader)
         {
             var userId = User.Identity.GetUserId();
             emailMessage.UserId = userId;
             emailMessage.SentDate = DateTime.Now;
+
+            //upload attachments
+            if (fileUploader.PostedFiles != null && fileUploader.PostedFiles.Any())
+            {
+                var uploadedFilesList = fileUploader.GetFilesNamesAndUpload();
+                emailMessage.AttachmentsDirectoryPath = fileUploader.Path;
+                emailMessage.AttachmentsFileNames = emailMessage.ConvertListOfAttachedFilesTostring(uploadedFilesList);
+            }
 
             //to prevent XSS attacks
             emailMessage.Body = WebUtility.HtmlDecode(emailMessage.Body);
@@ -83,21 +90,18 @@ namespace MailSender.Controllers
             {
                 var emailSender = new EmailSender(userEmailAccountParams);
                 await emailSender.Send(emailMessage);
-                ViewBag.Result = "E-mail succesfully sent !";
+                ViewBag.Result = $"E-mail succesfully sent !";
             }
             catch (Exception ex)
             {
-                //logowanie
+                //Log to file
                 ViewBag.Result = ex.Message;
             }
-                             
 
             _sentMessagesRepository.Add(emailMessage);
 
             return RedirectToAction("Index");
         }
-
-
 
         private string HtmlSanitizer(string dirtyHtml)
         {
@@ -107,21 +111,54 @@ namespace MailSender.Controllers
         }
 
 
-        [HttpPost] //from main window
+        [HttpPost]
         public ActionResult Delete(int id)
         {
             try
             {
                 var userId = User.Identity.GetUserId();
+                var emailMessage = _sentMessagesRepository.GetSentMessage(id, userId);
+
+                //delete folder with attachments
+                DeleteAttachments(emailMessage);
+
                 _sentMessagesRepository.Delete(id, userId);
+
             }
             catch (Exception exc)
             {
-                //logowanie do pliku
+                //log to file
                 return Json(new { Success = false, Message = exc.Message });
             }
             return Json(new { Success = true });
         }
+
+        public void DeleteAttachments(EmailMessage emailMessage)
+        {
+            if (emailMessage.AttachmentsDirectoryPath != null)
+            {
+                var directoryPath = emailMessage.GetAttachmentsDirectoryPath();
+                var listOfAttachments = emailMessage.GetAttachmentFilesList();
+
+                foreach (var fileName in listOfAttachments)
+                {
+                    var fileToDelete = directoryPath + fileName;
+                    if (System.IO.File.Exists(fileToDelete))
+                        System.IO.File.Delete(fileToDelete);
+                }
+                if (Directory.Exists(directoryPath))
+                    Directory.Delete(directoryPath);
+            }
+        }
+
+        public FileResult Download(string fileName, string directoryPath)
+        {
+            var filePath = Path.Combine(directoryPath, fileName);
+            var mimeType = MimeMapping.GetMimeMapping(fileName);
+
+            return File(filePath, mimeType, fileName);
+        }
+
 
         [AllowAnonymous]
         public ActionResult About()

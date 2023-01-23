@@ -20,5 +20,41 @@
         <div>
             @Html.Raw(WebUtility.HtmlDecode(Model.EmailMessage.Body))
         </div>
+
+        <hr class="my-4" />
+
+        <div>
+
+            @if (!string.IsNullOrEmpty(Model.EmailMessage.AttachmentsFileNames))
+            {
+                var directoryPath = Model.EmailMessage.GetAttachmentsDirectoryPath();
+                var listOfAttachments = Model.EmailMessage.GetAttachmentFilesList();
+
+                <h5 class="text-info">Attachments:</h5>
+
+                <ul>
+                    @foreach (var fileName in listOfAttachments)
+                    {
+                        if (File.Exists(directoryPath+fileName))
+                        {
+                            <li>
+                                <a href="@Url.Action("Download", "Home",
+                                new {fileName= fileName, directoryPath= directoryPath, @class="btn btn-link"})">
+                                    @fileName
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li>
+                                <a href="" class="btn btn-link disabled">@fileName</a>
+                            </li>
+                        }
+                    }
+                                        
+                </ul>
+            }
+
+        </div>
     </div>
 </div>

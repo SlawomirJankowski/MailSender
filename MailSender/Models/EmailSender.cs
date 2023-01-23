@@ -3,6 +3,7 @@ using MailSender.Models.Domains;
 using System;
 using System.CodeDom;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
@@ -11,6 +12,8 @@ using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
+using System.Web.Hosting;
 
 namespace MailSender
 {
@@ -25,6 +28,8 @@ namespace MailSender
         private string _senderEmail;
         private string _senderEmailPassword;
         private string _senderName;
+
+        private string _path = $"~/Content/Upload/{Guid.NewGuid()}/";
 
         public EmailSender(UserEmailAccountParams userEmailAccountParams)
         {
@@ -53,6 +58,16 @@ namespace MailSender
             _mail.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(emailMessage.Body.StripHTML(), null, MediaTypeNames.Text.Plain));
 
             _mail.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(emailMessage.Body, null, MediaTypeNames.Text.Html));
+
+            if (emailMessage.AttachmentsFileNames != null && emailMessage.AttachmentsFileNames.Any())
+            {
+                foreach (var fileName in emailMessage.GetAttachmentFilesList())
+                {
+                    var filePath = emailMessage.GetAttachmentsDirectoryPath() + fileName;
+
+                    _mail.Attachments.Add(new Attachment(filePath));
+                }
+            }
 
             _smtp = new SmtpClient
             {

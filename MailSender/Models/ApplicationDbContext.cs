@@ -16,11 +16,8 @@ namespace MailSender.Models
         public DbSet<EmailMessage> SentMessages { get; set; }
         public DbSet<UserEmailAccountParams> UserEmailAccounts { get; set; }
 
-
-
         public static ApplicationDbContext Create()
         {
-
             return new ApplicationDbContext();
         }
 

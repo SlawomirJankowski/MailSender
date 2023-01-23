@@ -202,8 +202,10 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\EmailAccountsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Models\FileUploader.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -211,6 +213,14 @@
     <Compile Include="Migrations\202301172120512_Init.cs" />
     <Compile Include="Migrations\202301172120512_Init.designer.cs">
       <DependentUpon>202301172120512_Init.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202301220102409_AddedAttachmentsProperty.cs" />
+    <Compile Include="Migrations\202301220102409_AddedAttachmentsProperty.designer.cs">
+      <DependentUpon>202301220102409_AddedAttachmentsProperty.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202301221608334_AddedPropertiesForStoreAttachmentsInfoInEmailMessageClass.cs" />
+    <Compile Include="Migrations\202301221608334_AddedPropertiesForStoreAttachmentsInfoInEmailMessageClass.designer.cs">
+      <DependentUpon>202301221608334_AddedPropertiesForStoreAttachmentsInfoInEmailMessageClass.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Domains\EmailMessage.cs" />
@@ -259,6 +269,7 @@
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Content\favicon.ico" />
+    <Content Include="Content\Images\mailbox-empty.png" />
     <Content Include="DataTables\DataTables-1.13.1\css\dataTables.bootstrap.css" />
     <Content Include="DataTables\DataTables-1.13.1\css\dataTables.bootstrap.min.css" />
     <Content Include="DataTables\DataTables-1.13.1\css\dataTables.bootstrap4.css" />
@@ -362,9 +373,11 @@
     <Content Include="Views\Home\ViewMessage.cshtml" />
     <Content Include="Views\Home\_MessageContent.cshtml" />
     <Content Include="Views\Home\NewEmail.cshtml" />
+    <Content Include="Views\EmailAccounts\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\Upload\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
@@ -396,6 +409,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202301172120512_Init.resx">
       <DependentUpon>202301172120512_Init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202301220102409_AddedAttachmentsProperty.resx">
+      <DependentUpon>202301220102409_AddedAttachmentsProperty.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202301221608334_AddedPropertiesForStoreAttachmentsInfoInEmailMessageClass.resx">
+      <DependentUpon>202301221608334_AddedPropertiesForStoreAttachmentsInfoInEmailMessageClass.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
