@@ -1,0 +1,130 @@
+﻿@model MailSender.Models.ViewModels.EmailAccountViewModel
+
+@{
+    ViewBag.Title = Model.Heading;
+}
+
+<div>
+    <h1>@ViewBag.Title </h1>
+</div>
+
+<hr />
+
+<div class="row">
+    <div>
+        @if (Model.UserEmailAccountParams.Id == 0)
+        {
+            <p class="alert alert-success">Fields: SENDER NAME, E-MAIL, PASSWORD, PORT, HOST SMTP and SSL are <strong>required !</strong></p>
+
+        }
+    </div>
+    @using (Html.BeginForm("EmailAccount", "EmailAccounts"))
+    {
+        @Html.HiddenFor(x => x.UserEmailAccountParams.Id)
+        @Html.HiddenFor(x => x.UserEmailAccountParams.UserId)
+        <div class="row">
+            <div class="col col-5">
+                <div class="form-group mt-2">
+                    @Html.LabelFor(x => x.UserEmailAccountParams.SenderName, new { @class = "control-label col-form-label-lg" })
+                    @Html.TextBoxFor(x => x.UserEmailAccountParams.SenderName,
+                        new { @class = "form-control", autocomplete = "off", type = "text", id = "sender" })
+                    @Html.ValidationMessageFor(x => x.UserEmailAccountParams.SenderName)
+                </div>
+
+                <div class="form-group mt-2">
+                    @Html.LabelFor(x => x.UserEmailAccountParams.SenderEmail, new { @class = "control-label col-form-label-lg" })
+                    @Html.TextBoxFor(x => x.UserEmailAccountParams.SenderEmail,
+                        new { @class = "form-control", autocomplete = "off", type = "email", id = "sender-email" })
+                    @Html.ValidationMessageFor(x => x.UserEmailAccountParams.SenderEmail)
+                </div>
+
+                <div class="form-group mt-2">
+                    @Html.LabelFor(x => x.UserEmailAccountParams.SenderEmailPassword, new { @class = "control-label col-form-label-lg" })
+                    @Html.TextBoxFor(x => x.UserEmailAccountParams.SenderEmailPassword,
+                        new { @class = "form-control readonly-field", autocomplete = "off", type = "text", id = "password" })
+                    @Html.ValidationMessageFor(x => x.UserEmailAccountParams.SenderEmailPassword)
+                </div>
+
+            </div>
+
+            <div class="col col-5 offset-2">
+                <div class="form-group mt-2">
+                    @Html.LabelFor(x => x.UserEmailAccountParams.Port, new { @class = "control-label col-form-label-lg" })
+                    @Html.TextBoxFor(x => x.UserEmailAccountParams.Port,
+                        new { @class = "form-control readonly-field", autocomplete = "off", type = "text", id = "port" })
+                    @Html.ValidationMessageFor(x => x.UserEmailAccountParams.Port)
+                </div>
+
+                <div class="form-group mt-2">
+                    @Html.LabelFor(x => x.UserEmailAccountParams.HostSmtp, new { @class = "control-label col-form-label-lg" })
+                    @Html.TextBoxFor(x => x.UserEmailAccountParams.HostSmtp,
+                       new { @class = "form-control readonly-field", autocomplete = "off", type = "text", id = "host" })
+                    @Html.ValidationMessageFor(x => x.UserEmailAccountParams.HostSmtp)
+                </div>
+
+                <div class="form-group mt-2 ">
+                    @Html.LabelFor(x => x.UserEmailAccountParams.EnableSsl, new { @class = "control-label col-form-label-lg" })<br />
+                    @Html.CheckBoxFor(x => x.UserEmailAccountParams.EnableSsl, new { @class = "form-check-input", id = "ssl", type = "checkbox" })
+                    @if (!Model.IsReadonly)
+                    {
+                       <span> &nbsp; &nbsp;</span><span class="badge bg-light">&nbsp;<em> Check if required ! </em></span>
+                    }
+
+                    @Html.ValidationMessageFor(x => x.UserEmailAccountParams.EnableSsl)
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="text-center mt-5">
+                @if (Model.UserEmailAccountParams.Id == 0)
+                {
+                    <button class="btn btn-danger btn-lg " type="submit">
+                        <i class="fa-solid fa-floppy-disk me-2"></i>
+                        Save Account
+                    </button>
+                    <button class="btn btn-info btn-lg " type="button" 
+                            onclick='window.location.href="@Url.Action("Index", "EmailAccounts")"'>
+                        <i class="fa-solid fa-arrow-rotate-left me-2"></i>
+                        Cancel
+                    </button>
+
+                }
+                else if (Model.IsReadonly)
+                {
+
+                    <script type="text/javascript" language="javascript">
+                        document.getElementById('sender').setAttribute("readonly", "readonly");
+                        document.getElementById('sender-email').setAttribute("readonly", "readonly");
+                        document.getElementById('password').setAttribute("readonly", "readonly");
+                        document.getElementById('port').setAttribute("readonly", "readonly");
+                        document.getElementById('host').setAttribute("readonly", "readonly");
+                        document.getElementById('ssl').setAttribute("disabled", "");
+                    </script>
+
+                    <button class="btn btn-info btn-lg " id="btnView" type="button">
+                        <i class="fa-solid fa-arrow-rotate-left me-2"></i>
+                        Back
+                    </button>
+                }
+                else
+                {
+                    <button class="btn btn-danger btn-lg " type="submit">
+                        <i class="fa-solid fa-floppy-disk me-2"></i>
+                        Save Changes
+                    </button>
+                    <button class="btn btn-info btn-lg " type="button"
+                            onclick='window.location.href="@Url.Action("Index", "EmailAccounts")"'>
+                        <i class="fa-solid fa-arrow-rotate-left me-2"></i>
+                        Cancel
+                    </button>
+                }
+
+
+            </div>
+
+        </div>
+    }
+</div>
+
+

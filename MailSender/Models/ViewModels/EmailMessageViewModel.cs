@@ -11,7 +11,7 @@ namespace MailSender.Models.ViewModels
     {
         public EmailMessage EmailMessage { get; set; }
         public List<UserEmailAccountParams> UserEmailAccountsParams { get; set; }
-
         public FileUploader FileUploader { get; set; }
+
     }
 }

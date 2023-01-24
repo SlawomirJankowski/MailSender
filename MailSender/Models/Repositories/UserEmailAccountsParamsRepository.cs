@@ -18,7 +18,7 @@ namespace MailSender.Models.Repositories
             }
         }
 
-        internal UserEmailAccountParams GetAccountParams(int userEmailAccountParamsId, string userId)
+        public UserEmailAccountParams GetAccountParams(int userEmailAccountParamsId, string userId)
         {
             using (var context = new ApplicationDbContext())
             {

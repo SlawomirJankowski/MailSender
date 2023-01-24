@@ -11,7 +11,7 @@
 
 <div class="input-group">
     <button class="btn btn-info btn-lg"
-            onclick='window.location.href="@Url.Action("NewAccount", "EmailAccounts")"'>
+            onclick='window.location.href="@Url.Action("EmailAccount", "EmailAccounts", new {isReadonly = false})"'>
         <i class="fa-solid fa-envelope-open-text"></i>
         Add new account
     </button>
@@ -41,13 +41,13 @@
                     <td>@userEmailAccount.SenderEmail</td>
                     <td>
                         <button class="btn btn-sm btn-primary"
-                                onclick='window.location.href="@Url.Action("EditAccount", "EmailAccounts", new { id = userEmailAccount.Id })"'>
+                                onclick='window.location.href="@Url.Action("EmailAccount", "EmailAccounts", new { id = userEmailAccount.Id, isReadonly= false })"'>
                             Edit
                         </button>
                     </td>
                     <td>
                         <button class="btn btn-sm btn-success"
-                                onclick='window.location.href="@Url.Action("ViewAccount", "EmailAccounts", new { id = userEmailAccount.Id })"'>
+                                onclick='window.location.href="@Url.Action("EmailAccount", "EmailAccounts", new { id = userEmailAccount.Id, isReadonly= true  })"'>
                             View
                         </button>
                     </td>
@@ -64,9 +64,9 @@
 }
 else
 {
-<div class="alert  alert-warning">
+<div class="alert  alert-danger">
     <h4 class="alert-heading">Information !</h4>
-    <p class="mb-0">There is no e-mail accounts added, to start please <a href="@Url.Action("NewAccount", "EmailAccounts")" class="alert-link">add a new one </a>!</p>
+    <p class="mb-0">There is no e-mail accounts added, to start sending e-mails please <a href="@Url.Action("NewAccount", "EmailAccounts")" class="alert-link">add a new one </a>!</p>
 </div>
 }
 

@@ -228,9 +228,11 @@
     <Compile Include="Models\EmailSender.cs" />
     <Compile Include="Models\Repositories\SentMessagesRepository.cs" />
     <Compile Include="Models\Repositories\UserEmailAccountsParamsRepository.cs" />
+    <Compile Include="Models\StringCipher.cs" />
     <Compile Include="Models\ViewModels\AddPhoneNumberViewModel.cs" />
     <Compile Include="Models\Domains\ApplicationUser.cs" />
     <Compile Include="Models\ViewModels\ChangePasswordViewModel.cs" />
+    <Compile Include="Models\ViewModels\EmailAccountViewModel.cs" />
     <Compile Include="Models\ViewModels\EmailMessageViewModel.cs" />
     <Compile Include="Models\ViewModels\FactorViewModel.cs" />
     <Compile Include="Models\ViewModels\ForgotPasswordViewModel.cs" />
@@ -245,6 +247,7 @@
     <Compile Include="Models\ViewModels\RegisterViewModel.cs" />
     <Compile Include="Models\ViewModels\ResetPasswordViewModel.cs" />
     <Compile Include="Models\ViewModels\SendCodeViewModel.cs" />
+    <Compile Include="Models\ViewModels\SentMessagesViewModel.cs" />
     <Compile Include="Models\ViewModels\SetPasswordViewModel.cs" />
     <Compile Include="Models\ViewModels\VerifyCodeViewModel.cs" />
     <Compile Include="Models\ViewModels\VerifyPhoneNumberViewModel.cs" />
@@ -374,6 +377,7 @@
     <Content Include="Views\Home\_MessageContent.cshtml" />
     <Content Include="Views\Home\NewEmail.cshtml" />
     <Content Include="Views\EmailAccounts\Index.cshtml" />
+    <Content Include="Views\EmailAccounts\EmailAccount.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

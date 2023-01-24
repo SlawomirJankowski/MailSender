@@ -1,4 +1,4 @@
-﻿@model IEnumerable<MailSender.Models.Domains.EmailMessage>
+﻿@model MailSender.Models.ViewModels.SentMessagesViewModel
 
 @{
     ViewBag.Title = $"{@User.Identity.Name}'s E-mails";
@@ -8,20 +8,31 @@
 <div class="btn-toolbar justify-content-between">
     <div class="input-group">
         <h1 class="">@User.Identity.Name's E-mails: </h1>
-        </div>
+    </div>
 
     <div class="input-group">
-        <button class="btn btn-info btn-lg"
-                onclick='window.location.href="@Url.Action("NewEmail", "Home")"'>
-            <i class="fa-solid fa-envelope-open-text me-2"></i>
-            New E-mail
-        </button>
+        @if (Model.UserEmailAccountParams.Count() == 0)
+        {
+            <button class="btn btn-info btn-lg disabled">
+                <i class="fa-solid fa-envelope-open-text me-2"></i>
+                New E-mail
+            </button>
+        }
+        else
+        {
+            <button class="btn btn-info btn-lg"
+                    onclick='window.location.href="@Url.Action("NewEmail", "Home")"'>
+                <i class="fa-solid fa-envelope-open-text me-2"></i>
+                New E-mail
+            </button>
+        }
+
     </div>
 </div>
 
 <hr />
 
-@if (Model != null && Model.Any())
+@if (Model.EmailMessages != null && Model.EmailMessages.Any())
 {
     <table id="messagesTable" class=" messagesTable table display table-hover table-striped mt-5 mb-5 text-center align-middle">
         <thead class="table-primary text-center dt-head-center">
@@ -36,7 +47,7 @@
             </tr>
         </thead>
         <tbody class="table-group-divider">
-            @foreach (var message in Model)
+            @foreach (var message in Model.EmailMessages)
             {
                 <tr>
                     <td>@message.SentDate.ToString()</td>
@@ -80,8 +91,16 @@
 }
 else
 {
+    if (Model.UserEmailAccountParams.Count() == 0)
+    {
+        <div class="alert  alert-danger">
+            <h4 class="alert-heading">Information !</h4>
+            <p class="mb-0">There is no e-mail accounts added, to start sending e-mails please <a href="@Url.Action("NewAccount", "EmailAccounts")" class="alert-link">add a new one </a>!</p>
+        </div>
+    }
+
     <div class="my-5 empty-mailbox-div">
-        <img src="~/Content/Images/mailbox-empty.png"  />
+        <img src="~/Content/Images/mailbox-empty.png" />
     </div>
 }
 
@@ -102,7 +121,7 @@ else
                 },
                 success: function (data) {
                     if (data.Success) {
-                        var row = btn.parentNode.parentNode;
+                        var row = btn.parentNode.parentNode;  @*window.location.href = "@Url.Action("Index", "Home")";*@
                         row.parentNode.removeChild(row);
                     } else {
                         alert(data.Message);

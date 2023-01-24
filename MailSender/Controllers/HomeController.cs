@@ -24,9 +24,13 @@ namespace MailSender.Controllers
         public ActionResult Index()
         {
             var userId = User.Identity.GetUserId();
-            var sentMessages = _sentMessagesRepository.GetSentMessages(userId);
+            var vm = new SentMessagesViewModel
+            {
+                EmailMessages = _sentMessagesRepository.GetSentMessages(userId),
+                UserEmailAccountParams = _userEmailAccountsParamsRepository.GetEmailAccounts(userId)
+            };
 
-            return View(sentMessages);
+            return View(vm);
         }
 
         public ActionResult ViewMessage(int id)
