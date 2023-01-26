@@ -214,10 +214,6 @@
     <Compile Include="Migrations\202301172120512_Init.designer.cs">
       <DependentUpon>202301172120512_Init.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202301220102409_AddedAttachmentsProperty.cs" />
-    <Compile Include="Migrations\202301220102409_AddedAttachmentsProperty.designer.cs">
-      <DependentUpon>202301220102409_AddedAttachmentsProperty.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\202301221608334_AddedPropertiesForStoreAttachmentsInfoInEmailMessageClass.cs" />
     <Compile Include="Migrations\202301221608334_AddedPropertiesForStoreAttachmentsInfoInEmailMessageClass.designer.cs">
       <DependentUpon>202301221608334_AddedPropertiesForStoreAttachmentsInfoInEmailMessageClass.cs</DependentUpon>
@@ -413,9 +409,6 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202301172120512_Init.resx">
       <DependentUpon>202301172120512_Init.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202301220102409_AddedAttachmentsProperty.resx">
-      <DependentUpon>202301220102409_AddedAttachmentsProperty.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202301221608334_AddedPropertiesForStoreAttachmentsInfoInEmailMessageClass.resx">
       <DependentUpon>202301221608334_AddedPropertiesForStoreAttachmentsInfoInEmailMessageClass.cs</DependentUpon>
