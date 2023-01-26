@@ -1,23 +1,23 @@
-﻿using MailSender.Models.Domains;
+﻿using Cipher;
+using MailSender.Models.Domains;
 using MailSender.Models.Repositories;
 using MailSender.Models.ViewModels;
 using Microsoft.AspNet.Identity;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace MailSender.Controllers
 {
+    [Authorize]
     public class EmailAccountsController : Controller
     {
         private UserEmailAccountsParamsRepository _userEmailAccountsParamsRepository =
             new UserEmailAccountsParamsRepository();
+        private SentMessagesRepository _sentMessagesRepository = new SentMessagesRepository();
 
-        private string _key = "569CAE02-1A80-4C32-95B6-E9B8AC0CD3EF";
+        private static StringCipher _cipher = new StringCipher();
 
-        [Authorize]
+
         // GET: EmailAccounts
         public ActionResult Index()
         {
@@ -27,72 +27,94 @@ namespace MailSender.Controllers
             return View(userEmailAccounts);
         }
 
-        public ActionResult EmailAccount (int id = 0, bool isReadonly = false)
+        // GET: Edit, View, Add
+        public ActionResult EmailAccount(int id = 0, bool isReadonly = false)
         {
-            EmailAccountViewModel vm; 
-
-            if (id != 0 && !isReadonly)
-            {
-                vm = new EmailAccountViewModel //edit
-                {
-                    UserEmailAccountParams = new UserEmailAccountParams
-                    {
-                        Id = id,
-                        SenderEmail = "asd@wer.com",
-                        SenderName = "Marian",
-                        SenderEmailPassword = "EDIT Password",
-                        Port = "324",
-                        HostSmtp = "eee.fer.er",
-                        EnableSsl = true
-
-                    },
-                    IsReadonly = isReadonly,
-                    Heading = "Edit e-mail account"
-
-                };
-            }
-            else if (id != 0 && isReadonly)
-            {
-                vm = new EmailAccountViewModel //view
-                {
-                    UserEmailAccountParams = new UserEmailAccountParams
-                    {
-                        Id = id,
-                        SenderEmail = "asd@wer.com",
-                        SenderName = "Marian",
-                        SenderEmailPassword = "VIEW READONLY TRUE",
-                        Port = "324",
-                        HostSmtp = "eee.fer.er",
-                        EnableSsl = true
-
-                    },
-                    IsReadonly = isReadonly,
-                    Heading = "View e-mail account"
-
-                };
-            }
-            else
-            {
-                vm = new EmailAccountViewModel //add
-                {
-                    UserEmailAccountParams = new UserEmailAccountParams
-                    {
-                        Id = id
-                    },
-                    IsReadonly = isReadonly,
-                    Heading = "Add a new e-mail account"
-                };
-            }
-
+            var userId = User.Identity.GetUserId();
+            EmailAccountViewModel vm = id != 0 ? 
+                PrepareEditViewEmailAccountVM(id, isReadonly, userId) 
+                : PrepareBasicEmailAccountVM(new UserEmailAccountParams(), isReadonly);
 
             return View(vm);
         }
 
+        private EmailAccountViewModel PrepareEditViewEmailAccountVM (int id, bool isReadonly, string userId)
+        {
+            var userEmailAccountParams = _userEmailAccountsParamsRepository.GetAccountParams(id, userId);
+            userEmailAccountParams.SenderEmailPassword = _cipher.Decrypt(userEmailAccountParams.SenderEmailPassword);
 
+            var vm = PrepareBasicEmailAccountVM(userEmailAccountParams, isReadonly);
+            return vm;
+        }
+
+        private EmailAccountViewModel PrepareBasicEmailAccountVM(UserEmailAccountParams userEmailAccountParams, bool isReadonly)
+        {
+            string heading;
+
+            if (userEmailAccountParams.Id != 0)
+            {
+                if (!isReadonly)
+                    heading = "Edit e-mail account details";
+                else
+                    heading = "View e-mail account details";
+            }
+            else
+                heading = "Add a new e-mail account";
+
+            return new EmailAccountViewModel
+            {
+                UserEmailAccountParams = userEmailAccountParams,
+                IsReadonly = isReadonly,
+                Heading = heading
+            };
+        }
+
+        // POST: Add + Edit
         [HttpPost]
+        [ValidateAntiForgeryToken()]
         public ActionResult EmailAccount(UserEmailAccountParams userEmailAccountParams)
         {
-            return View();
+            var userId = User.Identity.GetUserId();
+            userEmailAccountParams.UserId = userId;
+
+            /*
+            if (!ModelState.IsValid)
+            {
+                var vm = PrepareBasicEmailAccountVM(userEmailAccountParams, false);
+                return View("EmailAccount", vm);
+            }
+            */
+
+            userEmailAccountParams.SenderEmailPassword = _cipher.Encrypt( userEmailAccountParams.SenderEmailPassword);
+            
+            if (userEmailAccountParams.Id == 0)
+                _userEmailAccountsParamsRepository.Add(userEmailAccountParams);
+            else
+                _userEmailAccountsParamsRepository.Update(userEmailAccountParams);
+
+            return RedirectToAction("Index", "EmailAccounts");
         }
+
+
+        // POST: Delete
+        [HttpPost]
+        public ActionResult Delete(int id)
+        {
+            try
+            {
+                var userId = User.Identity.GetUserId();
+                var emailMessage = _userEmailAccountsParamsRepository.GetAccountParams(id, userId);
+
+                _userEmailAccountsParamsRepository.Delete(id, userId);
+
+            }
+            catch (Exception exc)
+            {
+                //log to file
+                return Json(new { Success = false, Message = exc.Message });
+            }
+            return Json(new { Success = true });
+        }
+
     }
 }

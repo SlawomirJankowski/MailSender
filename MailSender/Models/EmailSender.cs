@@ -1,4 +1,5 @@
-﻿using EmailSender.Extensions;
+﻿using Cipher;
+using EmailSender.Extensions;
 using MailSender.Models.Domains;
 using System;
 using System.CodeDom;
@@ -29,7 +30,7 @@ namespace MailSender
         private string _senderEmailPassword;
         private string _senderName;
 
-        private string _path = $"~/Content/Upload/{Guid.NewGuid()}/";
+        private static StringCipher _cipher = new StringCipher();
 
         public EmailSender(UserEmailAccountParams userEmailAccountParams)
         {
@@ -37,7 +38,7 @@ namespace MailSender
             _enableSsl = userEmailAccountParams.EnableSsl;
             _port = Convert.ToInt32(userEmailAccountParams.Port);
             _senderEmail = userEmailAccountParams.SenderEmail;
-            _senderEmailPassword = userEmailAccountParams.SenderEmailPassword;
+            _senderEmailPassword = _cipher.Decrypt(userEmailAccountParams.SenderEmailPassword);
             _senderName = userEmailAccountParams.SenderName;
         }
 
@@ -86,6 +87,7 @@ namespace MailSender
 
         private void OnSendCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
         {
+            //LOG + message for user
             _smtp.Dispose();
             _mail.Dispose();
         }

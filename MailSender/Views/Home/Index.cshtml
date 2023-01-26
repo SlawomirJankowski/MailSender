@@ -95,7 +95,7 @@ else
     {
         <div class="alert  alert-danger">
             <h4 class="alert-heading">Information !</h4>
-            <p class="mb-0">There is no e-mail accounts added, to start sending e-mails please <a href="@Url.Action("NewAccount", "EmailAccounts")" class="alert-link">add a new one </a>!</p>
+            <p class="mb-0">There is no e-mail accounts added, to start sending e-mails please <a href="@Url.Action("EmailAccount", "EmailAccounts")" class="alert-link">add a new one </a>!</p>
         </div>
     }
 
@@ -121,8 +121,7 @@ else
                 },
                 success: function (data) {
                     if (data.Success) {
-                        var row = btn.parentNode.parentNode;  @*window.location.href = "@Url.Action("Index", "Home")";*@
-                        row.parentNode.removeChild(row);
+                       window.location.href = "@Url.Action("Index", "Home")";
                     } else {
                         alert(data.Message);
                     }

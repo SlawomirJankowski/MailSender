@@ -18,10 +18,13 @@
 
         }
     </div>
-    @using (Html.BeginForm("EmailAccount", "EmailAccounts"))
+    @using (Html.BeginForm("EmailAccount", "EmailAccounts", FormMethod.Post))
     {
+        @Html.AntiForgeryToken()
+
         @Html.HiddenFor(x => x.UserEmailAccountParams.Id)
         @Html.HiddenFor(x => x.UserEmailAccountParams.UserId)
+
         <div class="row">
             <div class="col col-5">
                 <div class="form-group mt-2">
@@ -67,10 +70,9 @@
                     @Html.CheckBoxFor(x => x.UserEmailAccountParams.EnableSsl, new { @class = "form-check-input", id = "ssl", type = "checkbox" })
                     @if (!Model.IsReadonly)
                     {
-                       <span> &nbsp; &nbsp;</span><span class="badge bg-light">&nbsp;<em> Check if required ! </em></span>
+                        <span> &nbsp; &nbsp;</span><span class="badge bg-success"><em> Check if required ! </em></span>
                     }
 
-                    @Html.ValidationMessageFor(x => x.UserEmailAccountParams.EnableSsl)
                 </div>
             </div>
         </div>
@@ -79,11 +81,12 @@
             <div class="text-center mt-5">
                 @if (Model.UserEmailAccountParams.Id == 0)
                 {
-                    <button class="btn btn-danger btn-lg " type="submit">
+                    <button class="btn btn-danger btn-lg " type="submit"
+                            @*onclick='window.location.href = "@Url.Action("EmailAccount", "EmailAccounts")"'*@>
                         <i class="fa-solid fa-floppy-disk me-2"></i>
                         Save Account
                     </button>
-                    <button class="btn btn-info btn-lg " type="button" 
+                    <button class="btn btn-info btn-lg " type="button"
                             onclick='window.location.href="@Url.Action("Index", "EmailAccounts")"'>
                         <i class="fa-solid fa-arrow-rotate-left me-2"></i>
                         Cancel
@@ -102,14 +105,16 @@
                         document.getElementById('ssl').setAttribute("disabled", "");
                     </script>
 
-                    <button class="btn btn-info btn-lg " id="btnView" type="button">
+                    <button class="btn btn-info btn-lg " id="btnView" type="button"
+                            onclick='window.location.href="@Url.Action("Index", "EmailAccounts")"'>
                         <i class="fa-solid fa-arrow-rotate-left me-2"></i>
                         Back
                     </button>
                 }
                 else
                 {
-                    <button class="btn btn-danger btn-lg " type="submit">
+                    <button class="btn btn-danger btn-lg " type="submit"
+                            @*onclick='window.location.href = "@Url.Action("EmailAccount", "EmailAccounts")"'*@>
                         <i class="fa-solid fa-floppy-disk me-2"></i>
                         Save Changes
                     </button>
@@ -119,10 +124,7 @@
                         Cancel
                     </button>
                 }
-
-
             </div>
-
         </div>
     }
 </div>

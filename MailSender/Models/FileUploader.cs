@@ -30,7 +30,6 @@ namespace MailSender.Extensions
         {
 
             List<string> fileNames = new List<string>();
-
             Directory.CreateDirectory(HostingEnvironment.MapPath(Path));
 
             foreach (var file in PostedFiles)

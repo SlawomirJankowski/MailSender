@@ -11,5 +11,6 @@ namespace MailSender.Models.ViewModels
         public UserEmailAccountParams UserEmailAccountParams { get; set; }
         public bool IsReadonly { get; set; }
         public string Heading { get; set; }
+        //public List<EmailMessage> EmailMessages { get; set; }
     }
 }

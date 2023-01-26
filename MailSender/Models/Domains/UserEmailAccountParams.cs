@@ -8,12 +8,7 @@ namespace MailSender.Models.Domains
 {
     public class UserEmailAccountParams
     {
-        public UserEmailAccountParams()
-        {
-            EmailMessages = new Collection<EmailMessage>();
-        }
-
-
+        
         public int Id { get; set; }
 
         [Required]
@@ -45,7 +40,6 @@ namespace MailSender.Models.Domains
         public string UserId { get; set; }
 
 
-        public ICollection<EmailMessage> EmailMessages { get; set; }
         public ApplicationUser User { get; set; }
             
     }

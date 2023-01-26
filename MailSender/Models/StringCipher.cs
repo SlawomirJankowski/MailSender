@@ -11,9 +11,9 @@ namespace Cipher
     public class StringCipher
     {
         private string _key;
-        public StringCipher(string key)
+        public StringCipher()
         {
-            _key = key;
+            _key = "569CAE02-1A80-4C32-95B6-E9B8AC0CD3EF";
         }
 
         // This constant is used to determine the keysize of the encryption algorithm in bits.

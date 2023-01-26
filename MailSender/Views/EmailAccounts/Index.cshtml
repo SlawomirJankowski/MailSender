@@ -5,18 +5,18 @@
 }
 
 <div class="btn-toolbar justify-content-between">
-<div class="input-group">
-    <h1 class="">Manage your e-mail accounts </h1>
-</div>
-
-<div class="input-group">
-    <button class="btn btn-info btn-lg"
-            onclick='window.location.href="@Url.Action("EmailAccount", "EmailAccounts", new {isReadonly = false})"'>
-        <i class="fa-solid fa-envelope-open-text"></i>
-        Add new account
-    </button>
-</div>
+    <div class="input-group">
+        <h1 class="">Manage your e-mail accounts </h1>
     </div>
+
+    <div class="input-group">
+        <button class="btn btn-info btn-lg"
+                onclick='window.location.href="@Url.Action("EmailAccount", "EmailAccounts", new {isReadonly = false})"'>
+            <i class="fa-solid fa-envelope-open-text"></i>
+            Add new account
+        </button>
+    </div>
+</div>
 
 
 <hr />
@@ -41,7 +41,7 @@
                     <td>@userEmailAccount.SenderEmail</td>
                     <td>
                         <button class="btn btn-sm btn-primary"
-                                onclick='window.location.href="@Url.Action("EmailAccount", "EmailAccounts", new { id = userEmailAccount.Id, isReadonly= false })"'>
+                                onclick='window.location.href="@Url.Action("EmailAccount", "EmailAccounts", new { id = userEmailAccount.Id})"'>
                             Edit
                         </button>
                     </td>
@@ -58,19 +58,55 @@
                         </button>
                     </td>
                 </tr>
+
             }
         </tbody>
     </table>
 }
 else
 {
-<div class="alert  alert-danger">
-    <h4 class="alert-heading">Information !</h4>
-    <p class="mb-0">There is no e-mail accounts added, to start sending e-mails please <a href="@Url.Action("NewAccount", "EmailAccounts")" class="alert-link">add a new one </a>!</p>
-</div>
+    <div class="alert  alert-danger">
+        <h4 class="alert-heading">Information !</h4>
+        <p class="mb-0">
+            There is no e-mail accounts added, to start sending e-mails please
+            <a href="@Url.Action("EmailAccount", "EmailAccounts")" class="alert-link">
+                add a new one
+            </a>!
+        </p>
+    </div>
 }
 
+@section Scripts
+{
+    <script type="text/javascript">
 
-<div>
-</div>
+        function deleteEmailAccount(id, btn) {
+
+            if (!confirm("Please confirm, if you want to delete this account?"))
+                return;
+
+            $.ajax({
+                type: 'POST',
+                url: "@Url.Action("Delete", "EmailAccounts")",
+                data: {
+                    id: id
+                },
+                success: function (data) {
+                    if (data.Success) {
+                        var row = btn.parentNode.parentNode;
+                        row.parentNode.removeChild(row);
+                    } else {
+                        alert(data.Message);
+                    }
+                },
+                error: function (data) {
+                    alert(data.Message);
+                },
+                dataType: 'json'
+            });
+
+        }
+
+    </script>
+}
 

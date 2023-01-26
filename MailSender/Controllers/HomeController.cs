@@ -1,4 +1,5 @@
-﻿using Ganss.Xss;
+﻿using Cipher;
+using Ganss.Xss;
 using MailSender.Extensions;
 using MailSender.Models.Domains;
 using MailSender.Models.Repositories;
@@ -64,6 +65,7 @@ namespace MailSender.Controllers
 
 
         [HttpPost]
+        [ValidateAntiForgeryToken()]
         public async Task<ActionResult> NewEmail(EmailMessage emailMessage, FileUploader fileUploader)
         {
             var userId = User.Identity.GetUserId();
@@ -71,7 +73,7 @@ namespace MailSender.Controllers
             emailMessage.SentDate = DateTime.Now;
 
             //upload attachments
-            if (fileUploader.PostedFiles != null && fileUploader.PostedFiles.Any())
+            if (fileUploader.PostedFiles[0] != null)
             {
                 var uploadedFilesList = fileUploader.GetFilesNamesAndUpload();
                 emailMessage.AttachmentsDirectoryPath = fileUploader.Path;

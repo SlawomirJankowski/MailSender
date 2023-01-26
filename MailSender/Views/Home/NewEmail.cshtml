@@ -14,6 +14,8 @@
 
     @using (Html.BeginForm("NewEmail", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
+        @Html.AntiForgeryToken()
+
         @Html.HiddenFor(x => x.EmailMessage.Id)
         @Html.HiddenFor(x => x.EmailMessage.UserId)
         @Html.HiddenFor(x => x.EmailMessage.SentDate)
@@ -50,15 +52,9 @@
             </div>
 
             <div class="col col-5 offset-2">
-                @*<div class="mt-2 form-group">
-                    <label class="control-label col-form-label-lg">Attachments:</label>
-                    <div>
-                        <input type="file" multiple="multiple" name="postedFiles" />
-                    </div>
-                </div>*@
                 @Html.LabelFor(x => x.FileUploader.PostedFiles, new { @class = "control-label col-form-label-lg" })
                 @Html.TextBoxFor(x => x.FileUploader.PostedFiles,
-                new { @class = "form-control btn-info", type = "file", multiple = "multiple", name="postedFiles" })
+                new { @class = "form-control btn-info", type = "file", multiple = "multiple", name = "postedFiles" })
 
             </div>
 
