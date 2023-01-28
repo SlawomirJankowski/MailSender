@@ -49,21 +49,5 @@ namespace MailSender.Models.Domains
         public ApplicationUser User { get; set; }
         public UserEmailAccountParams UserEmailAccountParams { get; set; }
 
-
-        public string GetAttachmentsDirectoryPath()
-        {
-            return HostingEnvironment.MapPath(AttachmentsDirectoryPath);
-        }
-
-        public string[] GetAttachmentFilesList()
-        {
-            return AttachmentsFileNames.Split(new string[] { "|||" }, StringSplitOptions.None);
-        }
-
-        public string ConvertListOfAttachedFilesTostring(List<string> uploadedFilesList)
-        {
-            return string.Join("|||", uploadedFilesList);
-        }
-
     }
 }

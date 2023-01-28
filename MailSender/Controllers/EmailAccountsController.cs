@@ -33,7 +33,7 @@ namespace MailSender.Controllers
             var userId = User.Identity.GetUserId();
             EmailAccountViewModel vm = id != 0 ? 
                 PrepareEditViewEmailAccountVM(id, isReadonly, userId) 
-                : PrepareBasicEmailAccountVM(new UserEmailAccountParams(), isReadonly);
+                : PrepareBasicEmailAccountVM(new UserEmailAccountParams {UserId = userId}, isReadonly);
 
             return View(vm);
         }
@@ -77,13 +77,13 @@ namespace MailSender.Controllers
             var userId = User.Identity.GetUserId();
             userEmailAccountParams.UserId = userId;
 
-            /*
+            
             if (!ModelState.IsValid)
             {
                 var vm = PrepareBasicEmailAccountVM(userEmailAccountParams, false);
                 return View("EmailAccount", vm);
             }
-            */
+           
 
             userEmailAccountParams.SenderEmailPassword = _cipher.Encrypt( userEmailAccountParams.SenderEmailPassword);
             

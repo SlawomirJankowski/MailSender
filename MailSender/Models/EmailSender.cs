@@ -1,5 +1,6 @@
 ﻿using Cipher;
 using EmailSender.Extensions;
+using MailSender.Extensions;
 using MailSender.Models.Domains;
 using System;
 using System.CodeDom;

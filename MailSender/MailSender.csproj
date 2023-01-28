@@ -205,6 +205,7 @@
     <Compile Include="Controllers\EmailAccountsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Extensions\EmailMessageExtensions.cs" />
     <Compile Include="Models\FileUploader.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Global.asax.cs">
