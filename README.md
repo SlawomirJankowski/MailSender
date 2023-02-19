@@ -1,4 +1,4 @@
-# MailSender ASP.NET .NETFramework MVC
+# MailSender - _ASP.NET .NETFramework MVC_
 
 ## Opis aplikacji
 
