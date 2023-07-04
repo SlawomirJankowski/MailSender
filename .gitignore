@@ -361,3 +361,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/MailSender/UploadedFiles/9d058dd0-ec89-4e66-b9fc-23b6038a1de9/mailSender.png
+/MailSender.png
