@@ -55,7 +55,7 @@
       <HintPath>..\packages\HtmlAgilityPack.1.11.46\lib\Net45\HtmlAgilityPack.dll</HintPath>
     </Reference>
     <Reference Include="HtmlSanitizer, Version=8.0.0.0, Culture=neutral, PublicKeyToken=61c49a1a9e79cc28, processorArchitecture=MSIL">
-      <HintPath>..\packages\HtmlSanitizer.8.0.645\lib\net461\HtmlSanitizer.dll</HintPath>
+      <HintPath>..\packages\HtmlSanitizer.8.0.724\lib\net461\HtmlSanitizer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=3.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.3.6.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
