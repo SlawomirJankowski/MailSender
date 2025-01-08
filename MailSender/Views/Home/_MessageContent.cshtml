@@ -28,8 +28,8 @@
 
             @if (!string.IsNullOrEmpty(Model.EmailMessage.AttachmentsFileNames))
             {
-                var directoryPath = Model.EmailMessage.GetAttachmentsDirectoryPath();
-                var listOfAttachments = Model.EmailMessage.GetAttachmentFilesList();
+                var directoryPath = MailSender.Extensions.EmailMessageExtensions.GetAttachmentsDirectoryPath(Model.EmailMessage);
+                var listOfAttachments = MailSender.Extensions.EmailMessageExtensions.GetAttachmentFilesList(Model.EmailMessage);
 
                 <h5 class="text-info">Attachments:</h5>
 
